@@ -39,7 +39,8 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.ts --fix --ignore-path .gitignore",
     "prepare": "husky install",
-    "preinstall": "node ./scripts/preinstall.js"
+    "preinstall": "node ./scripts/preinstall.js",
+    "lint-staged": "lint-staged"
   },
   "lint-staged": {
     "*.{vue,ts,js}": [
