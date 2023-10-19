@@ -8,37 +8,53 @@
     <view class="content">
       <view
         class="item"
-        v-for="(item, index) in addressParams"
+        v-for="(item, index) in addressList"
         :key="index"
         @tap="currentIndex = index"
       >
-        <view class="user">{{ item.name }} {{ item.phone }}</view>
+        <view class="user">{{ item.receiver }} {{ item.contact }}</view>
         <view class="address">{{ item.address }}</view>
-        <radio class="icon icon-checked" :value="item.name" :checked="index === currentIndex" />
+        <radio class="icon icon-checked" :value="item.receiver" :checked="index === currentIndex" />
       </view>
     </view>
     <view class="footer">
-      <view class="button primary"> 新建地址 </view>
-      <view v-if="false" class="button primary">确定</view>
+      <view @tap="goAddress" class="button primary">新建地址</view>
+      <view @tap="selectedAddress" class="button primary">确定</view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-// 地址基本信息
-const addressParams = ref([
-  { name: '李明', phone: '13824686868', address: '北京市顺义区后沙峪地区安平北街6号院' },
-  { name: '王东', phone: '13824686868', address: '北京市顺义区后沙峪地区安平北街6号院' },
-  { name: '张三', phone: '13824686868', address: '北京市顺义区后沙峪地区安平北街6号院' },
-])
+import { ref, onMounted } from 'vue'
+import { getMemberAddressAPI } from '@/api/address'
+import type { AddressItem } from '@/types/address'
+
 // 当前的索引值
 let currentIndex = ref<number>(0)
-
+// 获取收获地址列表数据
+const addressList = ref<AddressItem[]>([])
+const getMemberAddressData = async () => {
+  const res = await getMemberAddressAPI()
+  addressList.value = res.result
+}
+// 初始化调用(页面显示调用)
+onMounted(() => {
+  getMemberAddressData()
+})
 // 子调父
 const emit = defineEmits<{
   (event: 'close'): void
+  (event: 'select', address: any): void
 }>()
+
+// 跳转到新建地址页面
+const goAddress = () => {
+  uni.navigateTo({ url: '/subpackage/address/address' })
+}
+// 选择当前的收获地址
+const selectedAddress = () => {
+  emit('select', addressList.value[currentIndex.value])
+}
 </script>
 
 <style lang="scss">

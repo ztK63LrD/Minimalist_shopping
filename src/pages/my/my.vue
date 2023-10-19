@@ -40,7 +40,7 @@
     <view class="orders">
       <view class="title">
         我的订单
-        <navigator class="navigator" url="/pagesOrder/list/list?type=0" hover-class="none">
+        <navigator class="navigator" url="/subpackage/list/list?type=0" hover-class="none">
           查看全部订单<text class="icon-right"></text>
         </navigator>
       </view>
@@ -50,14 +50,16 @@
           v-for="item in orderTypes"
           :key="item.type"
           :class="item.icon"
-          :url="`/pagesOrder/list/list?type=${item.type}`"
+          :url="`/subpackage/list/list?type=${item.type}`"
           class="navigator"
           hover-class="none"
         >
           {{ item.text }}
         </navigator>
         <!-- 客服 -->
+        <!-- #ifdef MP-WEIXIN -->
         <button class="contact icon-handset" open-type="contact">售后</button>
+        <!-- #endif -->
       </view>
     </view>
     <!-- 猜你喜欢 -->
